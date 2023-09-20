@@ -1,6 +1,12 @@
 #include "main.h"
 #include <string.h>
 
+/**
+ * _printf - Custom printf function
+ * @format: format strings
+ * Return: number of characters printed
+ */
+
 int _printf(const char *format, ...)
 {
 	va_list args;
