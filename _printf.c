@@ -9,44 +9,53 @@
 
 int _printf(const char *format, ...)
 {
-	va_list args;
+	int chara_print = 0;
+	va_list list_of_args;
 
-	char_count = 0;
+	if (format == NULL)
+		return -1;
+	
+	va_start(list_of_args, format);
 
-	va_start(args, format);
 	while (*format)
 	{
-		if (*format == '%')
+		if (*format != '&')
 		{
-			format++;
-		}
-		switch (*format)
-		{
-			case 'c':
-				print_char(va_args(args, int));
-				char_count++;
-				break;
-			case 's':
-				print_string(va_arg(args, char *));
-				char_count += strlen(va_arg(args, char *));
-				break;
-			case '%':
-				print_char('%');
-				char_count++;
-				break;
-			default:
-				print_char('%');
-				char_count++;
-				continue;
+			write(1, format, 1);
+			chara_print++;
 		}
 		else
 		{
-			print_char(*format);
-			char_count++;
+			format++;
+			if (*format == '\0')
+				break;
+
+			if (*format == '&')
+			{
+				write(1, format, 1);
+				chara_print++;
+			}
+			else if (*format == 'c')
+			{
+				char c = va_arg(list_of_args, int);
+				write(1, &c, 1);
+				chara_print++;
+			}
+			else if (*format == 's')
+			{
+				char *str = va_arg(list_of_args, char*)
+				int str_len = 0;
+
+				while (str[str_len] != '\0')
+					str_len++;
+
+				write(1, str, str_len)
+				chara_print += str_len;
+			}
 		}
 		format++;
 	}
-	va_end(args);
+	va_end(list_of_args);
 
-	return (char_count);
+	return chara_print;
 }
